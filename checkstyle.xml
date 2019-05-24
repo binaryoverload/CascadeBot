@@ -27,17 +27,16 @@
         <module name="OneTopLevelClass">
             <property name="severity" value="error"/>
         </module>
-        <module name="NoLineWrap"/>
-        <module name="EmptyBlock">
-            <property name="option" value="TEXT"/>
-            <property name="tokens"
-                      value="LITERAL_TRY, LITERAL_FINALLY, LITERAL_IF, LITERAL_ELSE, LITERAL_SWITCH"/>
+        <module name="NoLineWrap">
+            <property name="severity" value="error"/>
         </module>
         <module name="NeedBraces">
+            <property name="id" value="NeedBracesAll"/>
             <property name="severity" value="error"/>
             <property name="tokens" value="LITERAL_DO, LITERAL_ELSE, LITERAL_FOR, LITERAL_WHILE"/>
         </module>
         <module name="NeedBraces">
+            <property name="id" value="NeedBracesIfStatement"/>
             <property name="severity" value="error"/>
             <property name="allowSingleLineStatement" value="true"/>
             <property name="tokens" value="LITERAL_IF"/>
@@ -74,9 +73,6 @@
         <module name="ModifierOrder">
             <property name="severity" value="error"/>
         </module>
-        <module name="EmptyLineSeparator">
-            <property name="allowNoEmptyLineBetweenFields" value="true"/>
-        </module>
         <module name="SeparatorWrap">
             <property name="id" value="SeparatorWrapDot"/>
             <property name="tokens" value="DOT"/>
@@ -88,13 +84,11 @@
             <property name="option" value="EOL"/>
         </module>
         <module name="SeparatorWrap">
-            <!-- ELLIPSIS is EOL until https://github.com/google/styleguide/issues/258 -->
             <property name="id" value="SeparatorWrapEllipsis"/>
             <property name="tokens" value="ELLIPSIS"/>
             <property name="option" value="EOL"/>
         </module>
         <module name="SeparatorWrap">
-            <!-- ARRAY_DECLARATOR is EOL until https://github.com/google/styleguide/issues/259 -->
             <property name="id" value="SeparatorWrapArrayDeclarator"/>
             <property name="tokens" value="ARRAY_DECLARATOR"/>
             <property name="option" value="EOL"/>
@@ -110,6 +104,9 @@
         <module name="TypeName">
             <property name="severity" value="error"/>
         </module>
+        <module name="StringLiteralEquality">
+            <property name="severity" value="error"/>
+        </module>
         <module name="MemberName"/>
         <module name="ParameterName"/>
         <module name="LambdaParameterName"/>
@@ -119,10 +116,9 @@
         <module name="MethodTypeParameterName"/>
         <module name="InterfaceTypeParameterName"/>
         <module name="MethodName"/>
-        <module name="NoFinalizer">
+        <module name="GenericWhitespace">
             <property name="severity" value="error"/>
         </module>
-        <module name="GenericWhitespace"/>
         <module name="Indentation">
             <property name="lineWrappingIndentation" value="0"/>
         </module>
@@ -131,18 +127,42 @@
             <property name="allowedAbbreviationLength" value="1"/>
             <property name="allowedAbbreviations" value="MDC, JDA, GSON, UI, ID, URL"/>
         </module>
-        <module name="OverloadMethodsDeclarationOrder"/>
-        <module name="VariableDeclarationUsageDistance">
-
+        <module name="MethodParamPad">
+            <property name="severity" value="error"/>
         </module>
-        <module name="MethodParamPad"/>
         <module name="NoWhitespaceBefore">
             <property name="severity" value="error"/>
             <property name="tokens"
                       value="COMMA, SEMI, POST_INC, POST_DEC, DOT, ELLIPSIS, METHOD_REF"/>
             <property name="allowLineBreaks" value="true"/>
         </module>
-        <module name="ParenPad"/>
+        <module name="ParenPad">
+            <property name="severity" value="error"/>
+        </module>
+
+
+        <!--    Warnings    -->
+
+        <!--    TODO: JavaDoc    -->
+
+        <!--    Formatting and layout    -->
+        <module name="CommentsIndentation"/>
+        <module name="DeclarationOrder">
+            <message key="declaration.order.constructor"
+                     value="Constructor definition in wrong order. Correct order = Static -> Instance -> Constructors -> Methods"/>
+            <message key="declaration.order.instance"
+                     value="Instance variable definition in wrong order. Correct order = Static -> Instance -> Constructors -> Methods"/>
+            <message key="declaration.order.static"
+                     value="Static variable definition in wrong order. Correct order = Static -> Instance -> Constructors -> Methods"/>
+        </module>
+        <module name="EmptyCatchBlock">
+            <property name="exceptionVariableName" value="expected"/>
+        </module>
+        <module name="EmptyBlock">
+            <property name="option" value="TEXT"/>
+            <property name="tokens"
+                      value="LITERAL_TRY, LITERAL_FINALLY, LITERAL_IF, LITERAL_ELSE, LITERAL_SWITCH"/>
+        </module>
         <module name="OperatorWrap">
             <property name="option" value="EOL"/>
             <property name="tokens"
@@ -150,42 +170,29 @@
                     LT, MINUS, MOD, NOT_EQUAL, PLUS, QUESTION, SL, SR, STAR, METHOD_REF "/>
         </module>
         <module name="AnnotationLocation">
-            <property name="id" value="AnnotationLocationMostCases"/>
-            <property name="tokens"
-                      value="CLASS_DEF, INTERFACE_DEF, ENUM_DEF, METHOD_DEF, CTOR_DEF"/>
+            <property name="allowSamelineSingleParameterlessAnnotation" value="false"/>
         </module>
-        <module name="AnnotationLocation">
-            <property name="id" value="AnnotationLocationVariables"/>
-            <property name="tokens" value="VARIABLE_DEF"/>
-            <property name="allowSamelineMultipleAnnotations" value="true"/>
+        <module name="OverloadMethodsDeclarationOrder"/>
+        <module name="VariableDeclarationUsageDistance">
+            <property name="allowedDistance" value="5"/>
         </module>
-        <module name="NonEmptyAtclauseDescription"/>
-        <module name="AtclauseOrder">
-            <property name="tagOrder" value="@param, @return, @throws, @deprecated"/>
-            <property name="target"
-                      value="CLASS_DEF, INTERFACE_DEF, ENUM_DEF, METHOD_DEF, CTOR_DEF, VARIABLE_DEF"/>
-        </module>
-        <module name="SingleLineJavadoc">
-            <property name="ignoreInlineTags" value="false"/>
-        </module>
-        <module name="EmptyCatchBlock">
-            <property name="exceptionVariableName" value="expected"/>
-        </module>
-        <module name="CommentsIndentation">
-            <property name="severity" value="error"/>
+        <module name="EmptyLineSeparator">
+            <property name="allowNoEmptyLineBetweenFields" value="true"/>
         </module>
 
-        <module name="RequireThis"/>
-        <module name="DeclarationOrder">
-            <message key="declaration.order.constructor" value="Constructor definition in wrong order. Correct order = Static -> Instance -> Constructors -> Methods"/>
-            <message key="declaration.order.instance" value="Instance variable definition in wrong order. Correct order = Static -> Instance -> Constructors -> Methods"/>
-            <message key="declaration.order.static" value="Static variable definition in wrong order. Correct order = Static -> Instance -> Constructors -> Methods"/>
-        </module>
+
+        <!--    Code checks    -->
         <module name="DefaultComesLast"/>
         <module name="EqualsAvoidNull"/>
         <module name="EqualsHashCode"/>
         <module name="EmptyStatement"/>
         <module name="ModifiedControlVariable"/>
+        <module name="SimplifyBooleanExpression"/>
+        <module name="SimplifyBooleanReturn"/>
+        <module name="UnnecessaryParentheses"/>
+        <module name="NoClone"/>
+        <module name="NoFinalizer"/>
+        <module name="RequireThis"/>
 
     </module>
 </module>
