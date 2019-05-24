@@ -15,6 +15,23 @@
     </module>
 
     <module name="TreeWalker">
+
+        <module name="Regexp">
+            <property name="format" value="^([^\n\r ]+ )*(class|interface|enum) [^{]*\{\r?\n[^\n\r}]"/>
+            <property name="illegalPattern" value="true"/>
+            <property name="ignoreComments" value="true"/>
+            <property name="message" value="Leave empty row after class/interface/enum definition!"/>
+            <property name="severity" value="error"/>
+        </module>
+
+        <module name="Regexp">
+            <property name="format" value="[^\n\r{]\r?\n\}\r?\n"/>
+            <property name="illegalPattern" value="true"/>
+            <property name="ignoreComments" value="true"/>
+            <property name="message" value="Leave empty row before end of class/interface/enum!"/>
+            <property name="severity" value="error"/>
+        </module>
+
         <module name="OuterTypeFilename">
             <property name="severity" value="error"/>
         </module>
@@ -119,9 +136,10 @@
         <module name="GenericWhitespace">
             <property name="severity" value="error"/>
         </module>
-        <module name="Indentation">
-            <property name="lineWrappingIndentation" value="0"/>
-        </module>
+        <!--    This is removed until I can work out how to configure checkstyle properly    -->
+        <!--        <module name="Indentation">-->
+        <!--            <property name="lineWrappingIndentation" value="0"/>-->
+        <!--        </module>-->
         <module name="AbbreviationAsWordInName">
             <property name="ignoreFinal" value="true"/>
             <property name="allowedAbbreviationLength" value="1"/>

@@ -77,6 +77,18 @@
                 <artifactId>maven-site-plugin</artifactId>
                 <version>3.7.1</version>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <configLocation>checkstyle.xml</configLocation>
+                    <encoding>UTF-8</encoding>
+                    <consoleOutput>true</consoleOutput>
+                    <failsOnError>true</failsOnError>
+                    <linkXRef>false</linkXRef>
+                </configuration>
+            </plugin>
         </plugins>
         <resources>
             <resource>
@@ -115,19 +127,6 @@
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </repository>
     </repositories>
-
-    <reporting>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>3.1.0</version>
-                <configuration>
-                    <configLocation>checkstyle.xml</configLocation>
-                </configuration>
-            </plugin>
-        </plugins>
-    </reporting>
 
     <dependencies>
         <dependency>
