@@ -79,8 +79,12 @@ public class GuildSettings {
         this.adminsHaveAllPerms = adminsHaveAllPerms;
     }
 
-    public boolean willAllowTagCommands() { return allowTagCommands; }
+    public boolean willAllowTagCommands() {
+        return allowTagCommands;
+    }
 
-    public void setAllowTagCommands(boolean allowTagCommands) { this.allowTagCommands = allowTagCommands; }
+    public void setAllowTagCommands(boolean allowTagCommands) {
+        this.allowTagCommands = allowTagCommands;
+    }
 
 }

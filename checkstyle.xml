@@ -10,11 +10,17 @@
     <property name="severity" value="warning"/>
 
     <property name="fileExtensions" value="java, properties, xml"/>
+
     <module name="FileTabCharacter">
         <property name="eachLine" value="true"/>
     </module>
 
     <module name="TreeWalker">
+
+        <module name="TodoComment">
+            <property name="severity" value="info"/>
+            <property name="format" value="TODO"/>
+        </module>
 
         <module name="Regexp">
             <property name="format" value="^([^\n\r ]+ )*(class|interface|enum) [^{]*\{\r?\n[^\n\r}]"/>
