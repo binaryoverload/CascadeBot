@@ -64,7 +64,7 @@ public class GuildData {
     //region Guild data containers
 
     private GuildSettingsCore coreSettings = new GuildSettingsCore(guildId);
-    private GuildPermissions guildPermissions = new GuildPermissions();
+    private GuildPermissions permissions = new GuildPermissions();
     /*
         Eventually these will be used but they're commented out for now
 
@@ -189,7 +189,7 @@ public class GuildData {
     }
 
     public GuildPermissions getPermissions() {
-        return guildPermissions;
+        return permissions;
     }
 
     public Collection<GuildCommandInfo> getGuildCommandInfos() {

@@ -8,7 +8,6 @@ package org.cascadebot.cascadebot.commands.management.permission;
 import net.dv8tion.jda.core.entities.Member;
 import org.apache.commons.lang3.EnumUtils;
 import org.cascadebot.cascadebot.commandmeta.CommandContext;
-import org.cascadebot.cascadebot.commandmeta.ICommandExecutable;
 import org.cascadebot.cascadebot.commandmeta.ISubCommand;
 import org.cascadebot.cascadebot.commandmeta.Module;
 import org.cascadebot.cascadebot.data.objects.GuildPermissions;
@@ -19,7 +18,7 @@ public class GroupPermissionSwitchSubCommand implements ISubCommand {
 
     @Override
     public void onCommand(Member sender, CommandContext context) {
-        GuildPermissions.PermissionMode mode = context.getData().getGuildPermissions().getMode();
+        GuildPermissions.PermissionMode mode = context.getData().getPermissions().getMode();
         if (context.getArgs().length > 1) {
             mode = EnumUtils.getEnumIgnoreCase(GuildPermissions.PermissionMode.class, context.getArg(0));
             if (mode == null) {
