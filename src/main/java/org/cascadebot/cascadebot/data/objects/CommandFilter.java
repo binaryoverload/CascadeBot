@@ -1,7 +1,10 @@
 package org.cascadebot.cascadebot.data.objects;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.TextChannel;
 import org.cascadebot.cascadebot.commandmeta.ICommandExecutable;
@@ -13,12 +16,14 @@ import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
+@Setter
 public class CommandFilter {
 
-    private final FilterTarget target;
-    private final String targetId;
-    private final CommandFilter parent;
+    private FilterTarget target;
+    private String targetId;
+    private CommandFilter parent;
     private final List<CommandFilter> subFilters = new CopyOnWriteArrayList<>();
 
     public boolean addSubFilter(CommandFilter filter) {
