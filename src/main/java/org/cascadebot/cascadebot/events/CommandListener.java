@@ -212,7 +212,7 @@ public class CommandListener extends ListenerAdapter {
                 return !isFiltered;
             default:
                 // This will be if the filter is turned off
-                return true;
+                return false;
         }
     }
 
