@@ -5,6 +5,7 @@ import lombok.Getter;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.TextChannel;
 import org.cascadebot.cascadebot.commandmeta.ICommandExecutable;
+import org.cascadebot.cascadebot.data.language.Locale;
 
 import java.util.EnumSet;
 import java.util.List;
@@ -17,7 +18,6 @@ public class CommandFilter {
 
     private final FilterTarget target;
     private final String targetId;
-    private final FilterType type;
     private final CommandFilter parent;
     private final List<CommandFilter> subFilters = new CopyOnWriteArrayList<>();
 
@@ -55,16 +55,35 @@ public class CommandFilter {
         return subFilters.remove(position);
     }
 
+    public boolean evaluateCommandFilter(Locale locale, ICommandExecutable command, Member member, TextChannel channel) {
+        boolean filtered = false;
+        switch (target) {
+            case COMMAND:
+                filtered = command.command().equals(targetId) || command.command(locale).equals(targetId);
+                break;
+            case USER:
+                filtered = member.getUser().getId().equals(targetId);
+                break;
+            case ROLE:
+                filtered = member.getRoles().stream().anyMatch(role -> role.getId().equals(targetId));
+                break;
+            case CHANNEL:
+                filtered = channel.getId().equals(targetId);
+                break;
+        }
+        return filtered && subFilters.stream().anyMatch(filter -> filter.evaluateCommandFilter(locale, command, member, channel));
+    }
+
     public List<CommandFilter> getSubFilters() {
         return List.copyOf(subFilters);
     }
 
     public enum FilterTarget {
 
-        COMMAND,
-        USER(COMMAND),
-        ROLE(COMMAND),
-        CHANNEL(ROLE, USER, COMMAND);
+        USER,
+        ROLE,
+        COMMAND(USER, ROLE),
+        CHANNEL(COMMAND, USER, ROLE);
 
         @Getter
         private final EnumSet<FilterTarget> allowedSubFilters;

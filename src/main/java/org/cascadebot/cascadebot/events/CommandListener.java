@@ -23,6 +23,7 @@ import org.cascadebot.cascadebot.commandmeta.ICommandRestricted;
 import org.cascadebot.cascadebot.data.Config;
 import org.cascadebot.cascadebot.data.language.Language;
 import org.cascadebot.cascadebot.data.managers.GuildDataManager;
+import org.cascadebot.cascadebot.data.objects.CommandFilter;
 import org.cascadebot.cascadebot.data.objects.GuildData;
 import org.cascadebot.cascadebot.data.objects.Tag;
 import org.cascadebot.cascadebot.messaging.Messaging;
@@ -162,6 +163,10 @@ public class CommandListener extends ListenerAdapter {
                 // TODO: Modlog?
                 return;
             }
+            if (isFiltered(cmd, context)) {
+                // TODO: Messages?
+                return;
+            }
             // We need to check before we process sub-commands so users can't run sub-commands with a null permission
             if (!isAuthorised(cmd, context)) {
                 return;
@@ -181,6 +186,32 @@ public class CommandListener extends ListenerAdapter {
                     CascadeBot.LOGGER.info("Tag {} executed by {} with args {}", trigger, context.getUser().getAsTag(), Arrays.toString(context.getArgs()));
                 }
             }
+        }
+    }
+
+    private boolean isFiltered(ICommandMain cmd, CommandContext context) {
+        boolean isFiltered = false;
+        for (CommandFilter commandFilter : context.getData().getCommandFilterManager().getCommandFilters()) {
+            if (commandFilter.evaluateCommandFilter(context.getLocale(), cmd, context.getMember(), context.getChannel())) {
+                isFiltered = true;
+                // If we've matched on one of the filters, there's no point continuing to loop
+                // since the result won't change.
+                break;
+            }
+        }
+
+        // A user who is an discord admin (admins + owner) or has the bypass permission will never be blocked.
+        isFiltered = isFiltered && !context.getMember().hasPermission(Permission.ADMINISTRATOR) && !context.hasPermission("filters.bypass");
+        switch (context.getData().getCommandFilterManager().getFilterMode()) {
+            case WHITELIST:
+                // If they match the filtering condition, then allow them from running commands otherwise return false
+                return isFiltered;
+            case BLACKLIST:
+                // If they match the filtering condition, then block them from running a command otherwise return true.
+                return !isFiltered;
+            default:
+                // This will be if the filter is turned off
+                return true;
         }
     }
 

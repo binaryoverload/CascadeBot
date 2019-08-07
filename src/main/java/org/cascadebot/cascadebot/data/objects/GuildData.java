@@ -54,7 +54,7 @@ public class GuildData {
 
     private GuildSettingsCore coreSettings = new GuildSettingsCore(guildId);
     private GuildPermissions permissions = new GuildPermissions();
-    private GuildCommandFilters commandFilters = new GuildCommandFilters();
+    private GuildCommandFilterManager commandFilterManager = new GuildCommandFilterManager();
     /*
         Eventually these will be used but they're commented out for now
 
