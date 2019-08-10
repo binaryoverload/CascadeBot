@@ -201,19 +201,22 @@ public class CommandListener extends ListenerAdapter {
             }
         }
 
-        // A user who is an discord admin (admins + owner) or has the bypass permission will never be blocked.
-        isFiltered = isFiltered && !context.getMember().hasPermission(Permission.ADMINISTRATOR) && !context.hasPermission("filters.bypass");
+        boolean isBlocked;
         switch (context.getData().getCommandFilterManager().getFilterMode()) {
             case WHITELIST:
                 // If they match the filtering condition, then allow them from running commands otherwise return false
-                return isFiltered;
+                isBlocked = !isFiltered;
+                break;
             case BLACKLIST:
                 // If they match the filtering condition, then block them from running a command otherwise return true.
-                return !isFiltered;
+                isBlocked = isFiltered;
+                break;
             default:
                 // This will be if the filter is turned off
-                return false;
+                isBlocked = false;
         }
+        // A user who is an discord admin (admins + owner) or has the bypass permission will never be blocked.
+        return isBlocked && !(context.getMember().hasPermission(Permission.ADMINISTRATOR) || context.hasPermission("filters.bypass"));
     }
 
     private boolean processSubCommands(ICommandMain cmd, String[] args, CommandContext parentCommandContext) {
