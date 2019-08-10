@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.TextChannel;
+import org.bukkit.command.Command;
 import org.cascadebot.cascadebot.commandmeta.ICommandExecutable;
 import org.cascadebot.cascadebot.data.language.Locale;
 
@@ -15,7 +16,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 @Setter
@@ -25,6 +25,27 @@ public class CommandFilter {
     private String targetId;
     private CommandFilter parent;
     private final List<CommandFilter> subFilters = new CopyOnWriteArrayList<>();
+
+    public CommandFilter(FilterTarget target, String targetId) {
+        this(target, targetId, null);
+    }
+
+    public CommandFilter(FilterTarget target, String targetId, CommandFilter parent) {
+        this.target = target;
+        switch (target) {
+            case USER:
+            case ROLE:
+            case CHANNEL:
+                // Check to see if id provided is a valid long
+                try {
+                    Long.parseLong(targetId);
+                } catch (NumberFormatException e) {
+                    throw new IllegalArgumentException(String.format("Target ID for %s target type needs to be a number!", target));
+                }
+        }
+        this.targetId = targetId;
+        this.parent = parent;
+    }
 
     public boolean addSubFilter(CommandFilter filter) {
         if (!target.getAllowedSubFilters().contains(filter.getTarget())) {
@@ -36,6 +57,7 @@ public class CommandFilter {
                     )
             );
         }
+        filter.setParent(this);
         return subFilters.add(filter);
     }
 
@@ -49,6 +71,7 @@ public class CommandFilter {
                     )
             );
         }
+        filter.setParent(this);
         subFilters.add(position, filter);
     }
 
@@ -76,7 +99,11 @@ public class CommandFilter {
                 filtered = channel.getId().equals(targetId);
                 break;
         }
-        return filtered && subFilters.stream().anyMatch(filter -> filter.evaluateCommandFilter(locale, command, member, channel));
+        /*
+            To return true, at least one of the sub-filters needs to match the input. If we have no sub-filters, then
+            we will always directly return the result of this filter.
+         */
+        return filtered && (subFilters.isEmpty() || subFilters.stream().anyMatch(filter -> filter.evaluateCommandFilter(locale, command, member, channel)));
     }
 
     public List<CommandFilter> getSubFilters() {
@@ -91,10 +118,10 @@ public class CommandFilter {
         CHANNEL(COMMAND, USER, ROLE);
 
         @Getter
-        private final EnumSet<FilterTarget> allowedSubFilters;
+        private final Set<FilterTarget> allowedSubFilters;
 
         FilterTarget(FilterTarget... allowedSubFilters) {
-            this.allowedSubFilters = EnumSet.copyOf(Set.of(allowedSubFilters));
+            this.allowedSubFilters = Set.of(allowedSubFilters);
         }
 
     }
