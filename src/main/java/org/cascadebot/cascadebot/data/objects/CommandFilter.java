@@ -1,17 +1,14 @@
 package org.cascadebot.cascadebot.data.objects;
 
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.TextChannel;
-import org.bukkit.command.Command;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.TextChannel;
 import org.cascadebot.cascadebot.commandmeta.ICommandExecutable;
 import org.cascadebot.cascadebot.data.language.Locale;
 
-import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -90,7 +87,7 @@ public class CommandFilter {
                 filtered = command.command().equals(targetId) || command.command(locale).equals(targetId);
                 break;
             case USER:
-                filtered = member.getUser().getId().equals(targetId);
+                filtered = member.getId().equals(targetId);
                 break;
             case ROLE:
                 filtered = member.getRoles().stream().anyMatch(role -> role.getId().equals(targetId));
